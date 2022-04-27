@@ -87,6 +87,7 @@ while True:
             print('filtered guess:', new_word)
             similarity = model.similarity(new_word, secret_word)
             print(f'similarity = {similarity*100:.2f}\n\n', end='')
-            isGuessed = similarity = 1
+            isGuessed = similarity == 1
         except KeyError:
             print('Word not found in dataset\n')
+    print('you guessed it!\n\n')
