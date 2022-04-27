@@ -22,4 +22,4 @@ while True:
             print(f'similarity = {similarity*100:.2f}\n\n', end='')
             isGuessed = similarity = 1
         except KeyError:
-            print('Word not found in dataset (did you remove diacritics?')
+            print('Word not found in dataset (did you remove diacritics?)')
