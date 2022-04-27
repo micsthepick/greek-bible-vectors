@@ -2,7 +2,6 @@ import os
 import glob
 import re
 import numpy as np
-from gensim import corpora
 from gensim.models import FastText
 from gensim.models.callbacks import CallbackAny2Vec
 from matplotlib import pyplot as plt
@@ -17,15 +16,15 @@ class callback(CallbackAny2Vec):
         self.last_loss = 0.0
 
     def on_epoch_end(self, model):
-        loss = model.get_latest_training_loss()
-        this_loss = loss - self.last_loss
-        self.last_loss = loss
-        #self.tq.set_description(f'Loss: {this_loss:.3E}')
+        loss = 3-model.similarity('Χριστου', 'Ιησου')-model.similarity('Θεος', 'αγαπη')-model.similarity('Ιησου', 'αγαπη')
+        #this_loss = loss - self.last_loss
+        # self.last_loss = loss
+        self.tq.set_description(f'benchmark: {this_loss}')
         self.epoch = next(self.progress)
-        #losses[self.epoch] = this_loss
+        losses[self.epoch] = this_loss
 
 SIZE = 100
-EPOCHS = 400
+EPOCHS = 2000
 
 losses = np.zeros((EPOCHS,))
 
@@ -39,8 +38,10 @@ for fname in glob.glob('processed/*/*.txt'):
     text = [[word for word in line.split() if word.lower() != 'και'.lower()] for line in text]
     corpus += text
 
-model = FastText(corpus, vector_size=SIZE, workers=16, epochs=EPOCHS, sg=0, alpha=0.005, min_count=3, callbacks=[callback()])
-model.save(f'greek-fasttext-{SIZE}.kv')
+model = FastText(vector_size=SIZE, workers=16, sg=1, min_count=2, callbacks=[callback()])
+model.build_vocab(corpus_iterable=corpus)
+model.train(corpus_iterable=corpus, total_examples=len(corpus), epochs=EPOCHS)
+model.save(f'greek-fasttext-{SIZE}.bin')
 
 #plt.plot(losses)
 #plt.show()
