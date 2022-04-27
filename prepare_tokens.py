@@ -39,7 +39,7 @@ for fname in glob.glob('processed/*/*.txt'):
     text = [[word for word in line.split() if word.lower() != 'και'.lower()] for line in text]
     corpus += text
 
-model = Word2Vec(corpus, vector_size=SIZE, workers=6, epochs=EPOCHS, sg=0, alpha=0.1, compute_loss=True, callbacks=[callback()])
+model = Word2Vec(corpus, vector_size=SIZE, min_count=1, workers=16, epochs=EPOCHS, sg=0, alpha=0.1, compute_loss=True, callbacks=[callback()])
 model.save(f'greek-{SIZE}.kv')
 
 plt.plot(losses)
