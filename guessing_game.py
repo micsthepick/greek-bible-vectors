@@ -32,7 +32,7 @@ codes = [
     0x1FBD,
     0x0313,
     0x1FBE,
-    0x03B9,
+#    0x03B9, # Iota
     0x1FBF,
     0x0313,
     0x1FC0,
@@ -71,6 +71,7 @@ codes = [
     0x1FFE,
     0x0314
 ]
+# from http://opoudjis.net/unicode/gkdiacritics.html
 
 d = {c:None for c in codes}
 
